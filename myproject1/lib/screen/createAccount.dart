@@ -14,6 +14,7 @@ class _createAccountState extends State<createAccount> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   bool isLoading = false;
+  bool _isObscure = true;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -22,7 +23,7 @@ class _createAccountState extends State<createAccount> {
           ? Center(
               child: Container(
                   height: size.height / 20,
-                  width: size.width / 20,
+                  width: size.height / 20,
                   child: CircularProgressIndicator()),
             )
           : SingleChildScrollView(
@@ -82,7 +83,30 @@ class _createAccountState extends State<createAccount> {
                   Container(
                     width: size.width,
                     alignment: Alignment.center,
-                    child: field(size, "Password", Icons.lock, _password),
+                    child: Container(
+                      height: size.height / 15,
+                      width: size.width / 1.1,
+                      child: TextField(
+                        obscureText: _isObscure,
+                        controller: _password,
+                        decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.lock),
+                            hintText: "Password",
+                            hintStyle: TextStyle(color: Colors.grey),
+                            suffixIcon: IconButton(
+                              icon: Icon(_isObscure
+                                  ? Icons.visibility
+                                  : Icons.visibility_off),
+                              onPressed: () {
+                                setState(() {
+                                  _isObscure = !_isObscure;
+                                });
+                              },
+                            ),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: size.height / 10,
@@ -126,8 +150,9 @@ class _createAccountState extends State<createAccount> {
               setState(() {
                 isLoading = false;
               });
+              print(user.displayName);
               Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => HomeScreen()));
+                  context, MaterialPageRoute(builder: (_) => loginScreen()));
               print("Account Created");
             } else {
               print("Creation failed");

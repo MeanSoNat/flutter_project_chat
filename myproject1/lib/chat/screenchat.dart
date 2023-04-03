@@ -34,6 +34,7 @@ class chatScreen extends StatelessWidget {
 
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(userMap?['name']),
       ),
